@@ -18,26 +18,22 @@ const useDebounce = (value, delay) => {
 };
 
 const Products = ({ search }) => {
-    console.log('Products component rendered with search:', search);
-
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({
         totalItems: 0,
         currentPage: 1,
         lastPage: 1,
-        perPage: 10,
+        perPage: 12,
     });
     const [filters, setFilters] = useState({
         search: search || '',
         sortBy: 'created_at',
         sortDirection: 'desc',
-        perPage: 10,
+        perPage: 12,
     });
 
     const debouncedSearch = useDebounce(search, 500);
-
-    console.log('Hooks initialized - filters:', filters, 'debouncedSearch:', debouncedSearch);
 
     const fetchProducts = useCallback(async (page = 1) => {
         setLoading(true);
@@ -67,19 +63,16 @@ const Products = ({ search }) => {
     }, [filters]);
 
     useEffect(() => {
-        console.log('useEffect triggered with debouncedSearch:', debouncedSearch);
         if (debouncedSearch !== filters.search) {
             setFilters((prev) => ({ ...prev, search: debouncedSearch }));
         }
     }, [debouncedSearch]);
 
     useEffect(() => {
-        console.log('Fetching products with filters:', filters);
         fetchProducts();
     }, [filters, fetchProducts]);
 
     const handleSort = (sortBy, direction) => {
-        console.log('Sorting by:', sortBy, direction);
         setFilters((prev) => ({
             ...prev,
             sortBy,
@@ -88,11 +81,8 @@ const Products = ({ search }) => {
     };
 
     const handlePageChange = (page) => {
-        console.log('Page change to:', page);
         fetchProducts(page);
     };
-
-    console.log('Rendering JSX with loading:', loading, 'products:', products.length);
 
     return (
         <Container className="mt-5 py-2">
@@ -126,12 +116,14 @@ const Products = ({ search }) => {
                 <>
                     <Cards products={products} />
                     <div className="d-flex justify-content-center mt-5 mb-2">
-                        <Paginate
-                            handler={handlePageChange}
-                            currentPage={pagination.currentPage}
-                            isLast={pagination.currentPage === pagination.lastPage}
-                            isFirst={pagination.currentPage === 1}
-                        />
+                        {pagination.lastPage > 1 &&
+                            <Paginate
+                                handler={handlePageChange}
+                                currentPage={pagination.currentPage}
+                                isLast={pagination.currentPage === pagination.lastPage}
+                                isFirst={pagination.currentPage === 1}
+                            />
+                        }
                     </div>
                 </>
             )}
