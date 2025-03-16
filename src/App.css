@@ -1,0 +1,26 @@
+.border-0 {
+  border: none !important;
+}
+
+.outline-0 {
+  outline: none !important;
+}
+
+.navbar-toggler-icon-white {
+  filter: brightness(0) invert(1);
+}
+
+.fs-7 {
+  font-size: 14px;
+}
+
+.card-hover:hover {
+  box-shadow: 0 0 10px rgba(0,0,0,0.3);
+  transition: all 0.2s;
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.transition-200 {
+  transition: all 0.2s;
+}
